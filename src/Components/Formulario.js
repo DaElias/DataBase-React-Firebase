@@ -1,25 +1,54 @@
 import React, { useState } from 'react'
 import styled from 'styled-components';
 import DataBase from '../firebase/FirebaseConfig';
+import Mensaje from './Mensajes/Mensaje';
 
 const Formulario = () => {
     const [nombre, setNombre] = useState("");
     const [correo, setCorreo] = useState("");
 
+    const [notificacion, setNotificacion] = useState({
+        estado: false,
+        type: "", //green or red
+        mensaje:"" 
+    });
+
     const onSubmit = (e) => {
         e.preventDefault();
 
         //funcion asincrona
-        DataBase.collection('usuarios').add({
-            gmail: nombre,
-            name: correo
-        }).then(()=>{
-            //se ejecuta cuando la funcion completo la tarea
-            alert("Agregado Correctamente");
-        }).catch((error)=>{
-            //se ejecuta cuando hay algun error
-            alert("Error: ", error);
-        });
+        if(nombre!=="" && correo !== ""){
+            DataBase.collection('usuarios').add({
+                email: correo,
+                name: nombre
+            }).then(() => {
+                //se ejecuta cuando la funcion completo la tarea
+                //alert("Agregado Correctamente");
+                setNotificacion({
+                    estado: true,
+                    type: "green",
+                    mensaje: "Enviado Exitoso!!"
+                });
+            
+    
+    
+            }).catch((error) => {
+                //se ejecuta cuando hay algun error
+                //alert("Error: ", error);
+                setNotificacion({
+                    estado: true,
+                    type: "red",
+                    mensaje: "Error!!" 
+                });
+    
+            });
+        }else{
+            setNotificacion({
+                estado: true,
+                type: "red",
+                mensaje: "Espacios Vacios!!" 
+            });
+        }
 
         setNombre("");
         setCorreo("");
@@ -27,6 +56,9 @@ const Formulario = () => {
 
     return (
         <form onSubmit={onSubmit}>
+            <Mensaje
+                notificacion={notificacion}
+            />
             <Input
                 type="text"
                 name="nombre"

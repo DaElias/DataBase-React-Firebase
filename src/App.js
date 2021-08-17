@@ -1,16 +1,20 @@
 import React from "react";
 import styled from "styled-components";
 import Formulario from "./Components/Formulario";
-
+import ListaContactos from "./Components/ListaContactos";
 
 function App() {
-  return (
-    <Container>
-      <Titulo>Lista de contactos</Titulo>
-      <Formulario />
-    </Container>
-  );
+	return (
+		<Container>
+			<Titulo>Lista de contactos</Titulo>
+			<Formulario />
+			<ListaContactos />
+		</Container>
+	);
 }
+
+
+
 const Container = styled.div`
 	margin: 40px;
 	width: 90%;
